@@ -4,15 +4,16 @@ Pytorch implementation of MS-SSIM L1 Loss function for image restoration.
 # How to use
 import this .py file into your project.
 ```
-from MS_SSIM_L1_LOSS import MS_SSIM_L1_LOSS
+from MS_SSIM_L1_loss import MS_SSIM_L1_LOSS
 criterion = MS_SSIM_L1_LOSS()
 
 # your pytorch tensor x, y with [B, C, H, W] dimension on cuda device 0
 loss = criterion(x, y)
 ```
+Please check demo.py for more details.
 
 # Requirements:
-pytorch (only tested on pytorch 1.7.0 on windows 10 x64, older versions should work.)
+pytorch (only tested on pytorch 1.7.0 on windows 10 x64, other versions should work.)
 ## Optional (only for testing this loss function)
 numpy
 PIL
