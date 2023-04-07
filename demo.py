@@ -1,12 +1,27 @@
 import torch
 from PIL import Image, ImageFilter
 import numpy as np
-
+import matplotlib.pyplot as plt
 from MS_SSIM_L1_loss import MS_SSIM_L1_LOSS
 
 def pil2tensor(im):  # in: [PIL Image with 3 channels]. out: [B=1, C=3, H, W] (0, 1)
     return torch.Tensor((np.float32(im) / 255).transpose(2, 0 ,1)).unsqueeze(0)
 
+def display(img, gt,type):
+  # Display ground truth image and blurred image side by side
+  fig, ax = plt.subplots(1, 2, figsize=(8, 4))
+
+  # Display ground truth image
+  gt_img = gt.squeeze().permute(1, 2, 0).cpu().numpy()
+  ax[0].imshow(gt_img)
+  ax[0].set_title('Ground truth')
+
+  # Display blurred image
+  blurred_img = img.squeeze().permute(1, 2, 0).cpu().numpy()
+  ax[1].imshow(blurred_img)
+  ax[1].set_title(f'{str(type)} image')
+
+  plt.show()
 
 if __name__ == '__main__':
     '''Test of this loss function'''
@@ -37,8 +52,12 @@ if __name__ == '__main__':
     for img in imgs:
         img = pil2tensor(img).cuda(0)
         loss = LOSS(img, gt)
+        display(img, gt, 'Blurry')
+        print(f'MS_SSIM_L1_LOSS for image:{loss}')
         loss_blur.append(loss)
     for img in imgs2:
         img = pil2tensor(img).cuda(0)
         loss = LOSS(img, gt)
+        display(img, gt, 'Noisy')
+        print(f'MS_SSIM_L1_LOSS for image:{loss}')
         loss_noise.append(loss)
